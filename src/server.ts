@@ -4,12 +4,19 @@ import { swaggerDocs } from "./config/swagger";
 import { productRouter } from "./routes/product.routes";
 import { shoppingCartRouter } from "./routes/shopping-cart.routes";
 
+import cors from "cors";
+
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use("/user", userRouter);
 app.use("/product", productRouter);
