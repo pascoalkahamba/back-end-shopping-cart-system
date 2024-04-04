@@ -11,6 +11,9 @@
     "build": "tsc",
     "start": "node dist/src/server.js"
   },
+  "engines": {
+    "node": "20.12.1"
+  },
   "devDependencies": {
     "@jest/globals": "^29.7.0",
     "@types/bcrypt": "^5.0.2",
