@@ -11,6 +11,7 @@
   },
   "devDependencies": {
     "@jest/globals": "^29.7.0",
+    "@types/bcrypt": "^5.0.2",
     "@types/express": "^4.17.21",
     "@types/jest": "^29.5.12",
     "@types/jsonwebtoken": "^9.0.6",
@@ -30,8 +31,11 @@
     "bcrypt": "^5.1.1",
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
+<<<<<<< HEAD
     "jwt": "^0.2.0",
     "swagger-jsdoc": "^6.2.8",
+=======
+>>>>>>> 968a406f9c697063afd6bc19080ce62fe731a127
     "swagger-ui-express": "^5.0.0"
   }
 }

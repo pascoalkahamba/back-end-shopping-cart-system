@@ -3,6 +3,7 @@ import { handleError } from "../errors/handleError";
 import { BaseError } from "../errors/baseError";
 
 import jwt from "jsonwebtoken";
+import { AuthError } from "../errors/auth.errors";
 
 export async function authMiddleware(
   req: Request,
@@ -12,14 +13,14 @@ export async function authMiddleware(
   const authorization = req.headers.authorization;
 
   if (!authorization) {
-    // handleError()
+    handleError(AuthError.noTokenProvided(), req, res);
     return;
   }
 
   const [type, token] = authorization.split(" ");
 
   if (type !== "Bearer") {
-    // error
+    handleError(AuthError.invalidToken(), req, res);
     return;
   }
 
