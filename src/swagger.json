@@ -1,4 +1,71 @@
 {
-  "openapi": "3.1.0",
-  "info": {}
+  "openapi": "3.0.1",
+
+  "info": {
+    "title": "Shopping Cart System API Docs",
+    "description": "An api for a system to manage product stock and selling",
+    "version": "1.0.0"
+  },
+
+  "basePath": "/",
+
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "paths": {
+    "/user": {
+      "get": {
+        "tags": ["User"],
+        "security": [{ "bearerAuth": [] }],
+        "summary": "Lidar com questões de autenticação e criação de conta",
+        "description": "Permite adicionar, autenticar e gerenciar usuarios",
+        "responses": {
+          "200": {
+            "description": "Successful retrieval of health metric recommendations",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "water": {
+                      "type": "integer",
+                      "description": "Recommended amount of water to consume (in milliliters)"
+                    },
+                    "calories": {
+                      "type": "integer",
+                      "description": "Recommended caloric intake"
+                    },
+                    "fruits": {
+                      "type": "integer",
+                      "description": "Recommended servings of fruits"
+                    },
+                    "steps": {
+                      "type": "integer",
+                      "description": "Recommended number of steps to walk"
+                    },
+                    "trains": {
+                      "type": "integer",
+                      "description": "Recommended number of training sessions"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token error!"
+          },
+          "500": {
+            "description": "Internal server error!"
+          }
+        }
+      }
+    }
+  }
 }
