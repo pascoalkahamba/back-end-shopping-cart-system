@@ -1,9 +1,12 @@
 import express from "express";
 import { ProductController } from "../controllers/productController";
+import { authMiddleware } from "../middlewares/auth.middleware";
 
 const productRouter = express.Router();
 
 const productController = new ProductController();
+
+productRouter.use(authMiddleware)
 
 productRouter.post("/", productController.add);
 productRouter.get("/", productController.getProductsList);
