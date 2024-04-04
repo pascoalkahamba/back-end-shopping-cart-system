@@ -1,1 +1,1 @@
-export type ValueToOmit = "createdAt" | "updatedAt" | "id";
+export type DataBaseExtraValues = "createdAt" | "updatedAt" | "id";

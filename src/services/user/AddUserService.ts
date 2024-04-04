@@ -1,10 +1,10 @@
 import { User } from "@prisma/client";
 import { AddUserRespoitory } from "../../repositories/AddUserRepository";
-import { ValueToOmit } from "../../@types";
+import { DataBaseExtraValues } from "../../@types";
 
 class AddUserService {
   constructor(private addUserRepository: AddUserRespoitory) {}
-  async handle(user: Omit<User, ValueToOmit>) {
+  async handle(user: Omit<User, DataBaseExtraValues>) {
     this.addUserRepository.handle(user);
   }
 }

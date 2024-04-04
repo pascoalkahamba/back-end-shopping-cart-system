@@ -1,6 +1,6 @@
 import { User } from "@prisma/client";
-import { ValueToOmit } from "../@types";
+import { DataBaseExtraValues } from "../@types";
 
 export interface AddUserRespoitory {
-  handle(user: Omit<User, ValueToOmit>): Promise<void>;
+  handle(user: Omit<User, DataBaseExtraValues>): Promise<void>;
 }
