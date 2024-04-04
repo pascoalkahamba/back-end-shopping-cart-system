@@ -3,6 +3,8 @@ import { UserService } from "../services/user.service";
 import { UserModel } from "../@types";
 import { handleError } from "../errors/handleError";
 import { UserValidator } from "../validators/user.validator";
+import { BaseError } from "../errors/baseError";
+import { UserErrors } from "../errors/user.errors";
 
 const userValidator = new UserValidator();
 const userService = new UserService();
@@ -12,7 +14,7 @@ export class UserController {
     try {
       const user = req.body as UserModel;
 
-      userValidator.validate(user);
+      await userValidator.validate(user);
 
       let data = await userService.add(user);
 
@@ -21,5 +23,15 @@ export class UserController {
       handleError(e as BaseError, req, res);
     }
   }
-  remove(req: Request, res: Response) {}
+  async remove(req: Request, res: Response) {
+    try {
+      const { id } = req.params as { id: string };
+
+      const userDeleted = await userService.remove(Number(id));
+      if (!userDeleted) throw UserErrors.userNotFound();
+      res.send(userDeleted);
+    } catch (e) {
+      handleError(e as BaseError, req, res);
+    }
+  }
 }

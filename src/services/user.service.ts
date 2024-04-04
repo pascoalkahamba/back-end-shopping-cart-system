@@ -1,5 +1,4 @@
-import { User } from "@prisma/client";
-import { DataBaseExtraValues, UserModel } from "../@types";
+import { UserModel } from "../@types";
 import { prismaService } from "./prisma.service";
 
 export class UserService {
@@ -9,5 +8,17 @@ export class UserService {
     });
 
     return data;
+  }
+
+  async remove(id: number) {
+    try {
+      const userDeleted = await prismaService.prisma.user.delete({
+        where: { id },
+      });
+
+      return userDeleted;
+    } catch (e) {
+      return false;
+    }
   }
 }
