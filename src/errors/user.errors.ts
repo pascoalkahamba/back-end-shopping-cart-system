@@ -17,4 +17,7 @@ export class UserErrors {
   static userNotFound() {
     return new BaseError("Usuário não encontrado", 401);
   }
+  static userOrPasswordWrong() {
+    return new BaseError("Email ou senha incorretos", 401);
+  }
 }
