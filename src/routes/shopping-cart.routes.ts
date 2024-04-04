@@ -6,10 +6,14 @@ const shoppingCartRouter = express.Router();
 
 const shoppingCartController = new ShoppingCartController();
 
-shoppingCartRouter.use(authMiddleware)
+shoppingCartRouter.use(authMiddleware);
 
 shoppingCartRouter.get("/", shoppingCartController.getAll);
-shoppingCartRouter.post("/", shoppingCartController.add);
+shoppingCartRouter.post("/", shoppingCartController.addProduct);
+shoppingCartRouter.post(
+  "/buy",
+  shoppingCartController.buyProductsOnShoppingCart
+);
 shoppingCartRouter.delete("/", shoppingCartController.removeAllProducts);
 shoppingCartRouter.delete("/:productId", shoppingCartController.removeProduct);
 shoppingCartRouter.put("/:id", shoppingCartController.update);

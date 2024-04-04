@@ -6,10 +6,10 @@ const productRouter = express.Router();
 
 const productController = new ProductController();
 
-productRouter.use(authMiddleware)
+productRouter.use(authMiddleware);
 
 productRouter.post("/", productController.add);
-productRouter.get("/", productController.getProductsList);
+productRouter.get("/list/:page", productController.getProductsList);
 productRouter.get("/:id", productController.getById);
 productRouter.delete("/:id", productController.remove);
 productRouter.put("/:id", productController.update);

@@ -3,17 +3,41 @@ import { handleError } from "../errors/handleError";
 import { BaseError } from "../errors/baseError";
 import { ShoppingCartService } from "../services/shopping-cart.service";
 import { ShoppingCartModel, UserModel } from "../@types";
+import { ProductService } from "../services/product.service";
+import { prismaService } from "../services/prisma.service";
+import { getTotalFromShoppingCart } from "../utils/getTotalFromShoppingCart";
 
 const shoppingCartService = new ShoppingCartService();
+const productService = new ProductService();
 
 export class ShoppingCartController {
-  async add(req: Request, res: Response) {
+  async addProduct(req: Request, res: Response) {
     try {
       const shoppingCart = req.body as ShoppingCartModel;
+      shoppingCart.user_id = req.id;
 
-      // validate before
+      // validate before (if amount cannot be zero)
 
-      let shoppingCartAdded = await shoppingCartService.add(shoppingCart);
+      let exists = await prismaService.prisma.shoppingCart.findFirst({
+        where: {
+          user: {
+            id: shoppingCart.user_id,
+          },
+          product: {
+            id: shoppingCart.product_id,
+          },
+        },
+      });
+
+      console.log("exists", exists);
+
+      if (exists) {
+        throw new BaseError("Este produto já foi adicionado ao carrinho", 401);
+      }
+
+      let shoppingCartAdded = await shoppingCartService.addProduct(
+        shoppingCart
+      );
 
       res.send(shoppingCartAdded);
     } catch (e) {
@@ -44,6 +68,7 @@ export class ShoppingCartController {
 
       if (!removed) {
         // throw an error. Shopping Cart does not exist.
+        throw new BaseError("Houve um erro ao eliminar os produtos", 401);
       }
 
       res.send(removed);
@@ -56,7 +81,7 @@ export class ShoppingCartController {
       const id = req.params.id;
       const shoppingCartData = req.body as Pick<ShoppingCartModel, "amount">;
 
-      // validate before
+      // validate before updating
 
       const updated = await shoppingCartService.updateAmount(
         +id,
@@ -78,9 +103,39 @@ export class ShoppingCartController {
         user_id
       );
 
-      res.send(shoppingCartList);
+      const user = await prismaService.prisma.user.findFirst({
+        where: { id: user_id },
+        select: {
+          name: true,
+          email: true,
+          id: true,
+        },
+      });
+
+      res.send({
+        user,
+        items: shoppingCartList,
+        products: shoppingCartList.length + " produto(s) no carrinho",
+        total:
+          getTotalFromShoppingCart(shoppingCartList).toLocaleString("pt-BR"),
+      });
     } catch (e) {
       handleError(e as BaseError, req, res);
     }
+  }
+  async buyProductsOnShoppingCart(req: Request, res: Response) {
+    const user_id = req.id;
+
+    let amount = await shoppingCartService.buyProducts(user_id);
+
+    if (amount > 0) {
+      return res.send({
+        message: `Você acabou de comprar ${amount} produto(s) a partir do seu carrinho.`,
+      });
+    }
+
+    return res.send({
+      message: "O seu carrinho está vazio ainda.",
+    });
   }
 }

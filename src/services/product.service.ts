@@ -1,11 +1,20 @@
 import { ProductModel } from "../@types";
 import { prismaService } from "./prisma.service";
 
+const DEFAULT_SELECT = {
+  id: true,
+  name: true,
+  price: true,
+  stock: true,
+  createdAt: true,
+};
+
 export class ProductService {
   static pageMaxItems = 10;
   async add(productData: ProductModel) {
     const product = await prismaService.prisma.product.create({
       data: productData,
+      select: DEFAULT_SELECT,
     });
 
     return product;
@@ -14,6 +23,7 @@ export class ProductService {
     try {
       const deleted = await prismaService.prisma.product.delete({
         where: { id },
+        select: DEFAULT_SELECT,
       });
 
       return deleted;
@@ -25,28 +35,26 @@ export class ProductService {
     const updated = await prismaService.prisma.product.update({
       where: { id },
       data: productData,
+      select: DEFAULT_SELECT,
     });
+
+    console.log(updated);
 
     return updated;
   }
   async getById(id: number) {
     const product = await prismaService.prisma.product.findFirst({
       where: { id },
+      select: DEFAULT_SELECT,
     });
 
     return product;
   }
-  async getProductsList(page: number) {
+  async getProductsList(page: number = 0) {
     let products = await prismaService.prisma.product.findMany({
-      skip: page * ProductService.pageMaxItems,
-      take: ProductService.pageMaxItems,
-      select: {
-        id: true,
-        name: true,
-        price: true,
-        createdAt: true,
-        stock: true,
-      },
+      //   skip: page * ProductService.pageMaxItems,
+      //   take: ProductService.pageMaxItems,
+      select: DEFAULT_SELECT,
     });
 
     return products;
