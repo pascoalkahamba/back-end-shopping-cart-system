@@ -5,10 +5,10 @@ const shoppingCartRouter = express.Router();
 
 const shoppingCartController = new ShoppingCartController();
 
-shoppingCartRouter.post("/", shoppingCartController.add);
 shoppingCartRouter.get("/", shoppingCartController.getAll);
-shoppingCartRouter.get("/:id", shoppingCartController.getById);
-shoppingCartRouter.delete("/:id", shoppingCartController.remove);
+shoppingCartRouter.post("/", shoppingCartController.add);
+shoppingCartRouter.delete("/", shoppingCartController.removeAllProducts);
+shoppingCartRouter.delete("/:productId", shoppingCartController.removeProduct);
 shoppingCartRouter.put("/:id", shoppingCartController.update);
 
 export { shoppingCartRouter };

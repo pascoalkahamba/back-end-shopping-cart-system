@@ -10,33 +10,38 @@ export class ShoppingCartService {
 
     return res;
   }
-  async removeById(id: number) {
+
+  async removeProduct(userId: number, productId: number) {
     try {
-      let res = await prismaService.prisma.shoppingCart.delete({
-        where: { id },
+      let shoppingCart = await prismaService.prisma.shoppingCart.deleteMany({
+        where: { user_id: userId, product_id: productId },
       });
 
-      return res;
+      return Boolean(shoppingCart.count);
     } catch (e) {
       return false;
     }
   }
-  async update(id: number, shoppingCartData: ShoppingCartModel) {
+  async removeAllProducts(userId: number) {
+    try {
+      let shoppingCart = await prismaService.prisma.shoppingCart.deleteMany({
+        where: { user_id: userId },
+      });
+
+      return Boolean(shoppingCart.count);
+    } catch (e) {
+      return false;
+    }
+  }
+  async updateAmount(id: number, amount: number) {
     let shoppingCart = await prismaService.prisma.shoppingCart.update({
       where: { id },
-      data: shoppingCartData,
+      data: { amount },
     });
 
     return shoppingCart;
   }
-  async getById(id: number) {
-    let shoppingCart = await prismaService.prisma.shoppingCart.findFirst({
-      where: { id },
-    });
-
-    return shoppingCart;
-  }
-  async getShoppingCartsByUser(page: number, user_id: number) {
+  async getShoppingCartByUser(page: number, user_id: number) {
     let shoppingCarts = await prismaService.prisma.shoppingCart.findMany({
       skip: page * ShoppingCartService.pageMaxItems,
       take: ShoppingCartService.pageMaxItems,

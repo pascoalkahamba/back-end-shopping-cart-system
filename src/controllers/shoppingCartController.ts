@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { handleError } from "../errors/handleError";
 import { BaseError } from "../errors/baseError";
 import { ShoppingCartService } from "../services/shopping-cart.service";
-import { ShoppingCartModel } from "../@types";
+import { ShoppingCartModel, UserModel } from "../@types";
 
 const shoppingCartService = new ShoppingCartService();
 
@@ -13,18 +13,34 @@ export class ShoppingCartController {
 
       // validate before
 
-      let shoppingCartAdded = shoppingCartService.add(shoppingCart);
+      let shoppingCartAdded = await shoppingCartService.add(shoppingCart);
 
       res.send(shoppingCartAdded);
     } catch (e) {
       handleError(e as BaseError, req, res);
     }
   }
-  async remove(req: Request, res: Response) {
+  async removeProduct(req: Request, res: Response) {
     try {
-      const id = req.params.id as unknown as number;
+      const productId = req.params.productId as unknown as number;
+      const userId = req.id;
 
-      let removed = shoppingCartService.removeById(id);
+      let removed = await shoppingCartService.removeProduct(productId, userId);
+
+      if (!removed) {
+        // throw an error. Shopping Cart does not exist.
+      }
+
+      res.send(removed);
+    } catch (e) {
+      handleError(e as BaseError, req, res);
+    }
+  }
+  async removeAllProducts(req: Request, res: Response) {
+    try {
+      const userId = req.id;
+
+      let removed = await shoppingCartService.removeAllProducts(userId);
 
       if (!removed) {
         // throw an error. Shopping Cart does not exist.
@@ -38,11 +54,14 @@ export class ShoppingCartController {
   async update(req: Request, res: Response) {
     try {
       const id = req.params.id;
-      const shoppingCartData = req.body as ShoppingCartModel;
+      const shoppingCartData = req.body as Pick<ShoppingCartModel, "amount">;
 
       // validate before
 
-      const updated = shoppingCartService.update(+id, shoppingCartData);
+      const updated = await shoppingCartService.updateAmount(
+        +id,
+        shoppingCartData.amount
+      );
 
       res.send(updated);
     } catch (e) {
@@ -54,23 +73,12 @@ export class ShoppingCartController {
       const page = req.params.page;
       const user_id = req.id;
 
-      let shoppingCartList = shoppingCartService.getShoppingCartsByUser(
+      let shoppingCartList = await shoppingCartService.getShoppingCartByUser(
         +page,
         user_id
       );
 
       res.send(shoppingCartList);
-    } catch (e) {
-      handleError(e as BaseError, req, res);
-    }
-  }
-  async getById(req: Request, res: Response) {
-    try {
-      const shoppingCartId = req.params.id;
-
-      let shoppingCart = shoppingCartService.getById(+shoppingCartId);
-
-      res.send(shoppingCart);
     } catch (e) {
       handleError(e as BaseError, req, res);
     }
