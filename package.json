@@ -7,7 +7,9 @@
   "license": "MIT",
   "scripts": {
     "dev": "tsx watch ./src/server.ts",
-    "test": "jest"
+    "test": "jest",
+    "build": "tsc",
+    "start": "node dist/src/server.js"
   },
   "devDependencies": {
     "@jest/globals": "^29.7.0",

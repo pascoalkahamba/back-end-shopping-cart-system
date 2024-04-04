@@ -57,9 +57,7 @@ export class ProductController {
   }
   async getProductsList(req: Request, res: Response) {
     try {
-      const page = req.params.page;
-
-      let productList = await productService.getProductsList(+page);
+      let productList = await productService.getProductsList();
 
       return res.send(productList);
     } catch (e) {

@@ -9,7 +9,7 @@ const productController = new ProductController();
 productRouter.use(authMiddleware);
 
 productRouter.post("/", productController.add);
-productRouter.get("/list/:page", productController.getProductsList);
+productRouter.get("/list", productController.getProductsList);
 productRouter.get("/:id", productController.getById);
 productRouter.delete("/:id", productController.remove);
 productRouter.put("/:id", productController.update);

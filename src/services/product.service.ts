@@ -50,7 +50,7 @@ export class ProductService {
 
     return product;
   }
-  async getProductsList(page: number = 0) {
+  async getProductsList() {
     let products = await prismaService.prisma.product.findMany({
       //   skip: page * ProductService.pageMaxItems,
       //   take: ProductService.pageMaxItems,

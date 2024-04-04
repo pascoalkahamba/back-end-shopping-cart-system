@@ -42,7 +42,10 @@ export class ShoppingCartService {
     return res;
   }
 
-  private async removeProductsFromShoppingCart(shoppingCarts: ShoppingCart[]) {
+  private async removeProductsFromShoppingCart(
+    shoppingCarts: ShoppingCart[],
+    forceDelete: boolean = false
+  ) {
     for (let shoppingCart of shoppingCarts) {
       let currentProduct = await prismaService.prisma.product.findFirst({
         where: { id: shoppingCart.product_id },
@@ -61,9 +64,11 @@ export class ShoppingCartService {
         },
       });
 
-      await prismaService.prisma.shoppingCart.delete({
-        where: { id: shoppingCart.id },
-      });
+      if (forceDelete) {
+        await prismaService.prisma.shoppingCart.delete({
+          where: { id: shoppingCart.id },
+        });
+      }
     }
   }
 
@@ -73,7 +78,7 @@ export class ShoppingCartService {
         where: { user_id: userId, product_id: productId },
       });
 
-      await this.removeProductsFromShoppingCart(shoppingCarts);
+      await this.removeProductsFromShoppingCart(shoppingCarts, true);
 
       return Boolean(shoppingCarts.length);
     } catch (e) {
@@ -86,7 +91,7 @@ export class ShoppingCartService {
         where: { user_id: userId },
       });
 
-      await this.removeProductsFromShoppingCart(shoppingCarts);
+      await this.removeProductsFromShoppingCart(shoppingCarts, true);
 
       return Boolean(shoppingCarts.length);
     } catch (e) {
