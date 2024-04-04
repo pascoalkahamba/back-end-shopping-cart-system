@@ -30,10 +30,6 @@
     "bcrypt": "^5.1.1",
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
-<<<<<<< HEAD
-=======
-    "jwt": "^0.2.0",
->>>>>>> 410623d260293ec73d21e62c19faebb7aab6ab33
     "swagger-ui-express": "^5.0.0"
   }
 }
