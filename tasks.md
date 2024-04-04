@@ -9,3 +9,13 @@
 6. Informações do usuario
 7. Custo total
 8. Outras informações relevantes
+
+# TDD
+
+# A little bit of DDD
+
+# In Memory Database
+
+# Performance (Multiple Requests)
+
+# As modular as possible
