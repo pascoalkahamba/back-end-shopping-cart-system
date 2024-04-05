@@ -1,23 +1,31 @@
 import { BaseError } from "./baseError";
+import { StatusCodes } from "http-status-codes";
 
 export class UserErrors {
   static invalidName() {
-    return new BaseError("Nome invalido", 401);
+    return new BaseError("Nome invalido", StatusCodes.BAD_REQUEST);
   }
 
-  static invalidEmail() {
-    return new BaseError("Email invalido", 401);
-  }
+  static invalidEmail() {}
   static tooShortPassword() {
-    return new BaseError("Senha deve ter mais de 6 caracteres", 401);
+    return new BaseError(
+      "Senha deve ter mais de 6 caracteres",
+      StatusCodes.BAD_REQUEST
+    );
   }
   static userEmailExists() {
-    return new BaseError("Já existe um usuário com este email", 401);
+    return new BaseError(
+      "Já existe um usuário com este email",
+      StatusCodes.NOT_ACCEPTABLE
+    );
   }
   static userNotFound() {
-    return new BaseError("Usuário não encontrado", 401);
+    return new BaseError("Usuário não encontrado", StatusCodes.NOT_FOUND);
   }
   static userOrPasswordWrong() {
-    return new BaseError("Email ou senha incorretos", 401);
+    return new BaseError(
+      "Email ou senha incorretos",
+      StatusCodes.INSUFFICIENT_SPACE_ON_RESOURCE
+    );
   }
 }
