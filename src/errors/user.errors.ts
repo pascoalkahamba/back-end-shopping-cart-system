@@ -10,13 +10,13 @@ export class UserErrors {
   static tooShortPassword() {
     return new BaseError(
       "Senha deve ter mais de 6 caracteres",
-      StatusCodes.BAD_REQUEST
+      StatusCodes.LENGTH_REQUIRED
     );
   }
   static userEmailExists() {
     return new BaseError(
       "Já existe um usuário com este email",
-      StatusCodes.NOT_ACCEPTABLE
+      StatusCodes.CONFLICT
     );
   }
   static userNotFound() {

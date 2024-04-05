@@ -6,6 +6,7 @@ import { ShoppingCartModel, UserModel } from "../@types";
 import { ProductService } from "../services/product.service";
 import { prismaService } from "../services/prisma.service";
 import { getTotalFromShoppingCart } from "../utils/getTotalFromShoppingCart";
+import { StatusCodes } from "http-status-codes";
 
 const shoppingCartService = new ShoppingCartService();
 const productService = new ProductService();
@@ -32,7 +33,10 @@ export class ShoppingCartController {
       console.log("exists", exists);
 
       if (exists) {
-        throw new BaseError("Este produto já foi adicionado ao carrinho", 401);
+        throw new BaseError(
+          "Este produto já foi adicionado ao carrinho",
+          StatusCodes.CONFLICT
+        );
       }
 
       let shoppingCartAdded = await shoppingCartService.addProduct(
@@ -68,7 +72,10 @@ export class ShoppingCartController {
 
       if (!removed) {
         // throw an error. Shopping Cart does not exist.
-        throw new BaseError("Houve um erro ao eliminar os produtos", 401);
+        throw new BaseError(
+          "Houve um erro ao eliminar os produtos",
+          StatusCodes.NOT_FOUND
+        );
       }
 
       res.send(removed);

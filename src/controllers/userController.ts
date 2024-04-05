@@ -7,6 +7,7 @@ import { BaseError } from "../errors/baseError";
 import { UserErrors } from "../errors/user.errors";
 import { User } from "@prisma/client";
 import jwt from "jsonwebtoken";
+import { StatusCodes } from "http-status-codes";
 
 const userValidator = new UserValidator();
 const userService = new UserService();
@@ -20,7 +21,7 @@ export class UserController {
 
       const data = await userService.add(user);
 
-      res.status(201).json(data);
+      res.status(StatusCodes.CREATED).json(data);
     } catch (e) {
       handleError(e as BaseError, req, res);
     }
@@ -53,7 +54,7 @@ export class UserController {
           expiresIn: "30d",
         }
       );
-      res.status(200).json({
+      res.status(StatusCodes.OK).json({
         token,
         user,
       });
