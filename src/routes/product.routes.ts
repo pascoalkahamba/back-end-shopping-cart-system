@@ -6,8 +6,6 @@ const productRouter = express.Router();
 
 const productController = new ProductController();
 
-productRouter.use(authMiddleware);
-
 productRouter.post("/", productController.add);
 productRouter.get("/list", productController.getProductsList);
 productRouter.get("/:id", productController.getById);
