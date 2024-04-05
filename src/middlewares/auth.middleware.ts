@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
 import { handleError } from "../errors/handleError";
-import { BaseError } from "../errors/baseError";
 
 import jwt from "jsonwebtoken";
 import { AuthError } from "../errors/auth.errors";
