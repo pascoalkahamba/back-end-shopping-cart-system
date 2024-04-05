@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 class PrismaService {
   public prisma = new PrismaClient();
   constructor() {
-    // this.connect();
+    this.connect();
   }
   async connect() {
     await this.prisma.$connect();

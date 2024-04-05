@@ -18,8 +18,6 @@ app.use(
 
 const PORT = process.env.PORT || 3000;
 
-console.log(process.env);
-
 app.use("/user", userRouter);
 app.use("/product", productRouter);
 app.use("/shopping-cart", shoppingCartRouter);
